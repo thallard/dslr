@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
-import histogram
-import scatter_plot
+import src.histogram as histogram
+import src.scatter_plot as scatter_plot
+import pair_plot as pair_plot
 from time import time
 
 from src.utils.logger import log
@@ -17,8 +18,9 @@ def clean_dataset(df):
     temp.replace('', np.NaN, inplace=True)
     temp.dropna(inplace=True)
     temp.reset_index(inplace=True)
-    temp.drop(['Index', 'index'], axis=1, inplace=True)
+    temp.drop(['Index', 'index', 'Birthday', 'Best Hand', 'Last Name', 'First Name'], axis=1, inplace=True)
     log("\033[32mClean dataset finished in : " + str(round(time() - start_time, 3)) + "s.\033[0;0m")
+    print(temp.head())
     return temp
 
 
@@ -34,7 +36,7 @@ def main():
         df = clean_dataset(df)
         histogram.draw_histogram(df, start_time, 'Care of Magical Creatures')
         scatter_plot.draw_scatter(df, start_time, 'Defense Against the Dark Arts', 'Astronomy')
-
+        pair_plot.draw_pair_plot(df, start_time)
 
     return 0
 
