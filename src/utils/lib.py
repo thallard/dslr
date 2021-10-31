@@ -56,3 +56,14 @@ def mypercentile(data, coef):
     if reste > 1 / 2:
         return list_data[int(pos + (1 - reste))]
     return list_data[pos]
+
+
+# Create a dict and a string array with each name of hogwarts house
+def create_house_data_dict(df):
+    houses = ['Gryffindor', 'Slytherin', 'Ravenclaw', 'Hufflepuff']
+    houses_data = dict()
+
+    # Fill dictionnary with dataset for each house
+    for house in houses:
+        houses_data[house] = df[df['Hogwarts House'] == house]
+    return houses, houses_data

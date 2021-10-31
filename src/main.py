@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
-from histogram import draw_histograms
-from src.utils.logger import log
+import histogram
+import scatter_plot
 from time import time
 
+from src.utils.logger import log
 
 start_time = time()
 
@@ -17,7 +18,7 @@ def clean_dataset(df):
     temp.dropna(inplace=True)
     temp.reset_index(inplace=True)
     temp.drop(['Index', 'index'], axis=1, inplace=True)
-    log("\033[32mClean dataset finished in : " + str(round(time() - start_time, 3)) + " ms.\033[0;0m")
+    log("\033[32mClean dataset finished in : " + str(round(time() - start_time, 3)) + "s.\033[0;0m")
     return temp
 
 
@@ -31,8 +32,9 @@ def main():
         exit(1)
     finally:
         df = clean_dataset(df)
-        # print("\033[35mQuel cours de Poudlard a une répartition des notes homogènes entre les quatres maisons ?\033[0m")
-        draw_histograms(df, start_time)
+        histogram.draw_histogram(df, start_time, 'Care of Magical Creatures')
+        scatter_plot.draw_scatter(df, start_time, 'Defense Against the Dark Arts', 'Astronomy')
+
 
     return 0
 
