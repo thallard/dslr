@@ -1,13 +1,6 @@
 import numpy as np
 import pandas as pd
-import src.histogram as histogram
-import src.scatter_plot as scatter_plot
-import pair_plot as pair_plot
-from time import time
-
-from src.utils.logger import log
-
-start_time = time()
+import pair_plot
 
 
 # Remove empty cells and useless columns from dataset
@@ -19,8 +12,6 @@ def clean_dataset(df):
     temp.dropna(inplace=True)
     temp.reset_index(inplace=True)
     temp.drop(['Index', 'index', 'Birthday', 'Best Hand', 'Last Name', 'First Name'], axis=1, inplace=True)
-    log("\033[32mClean dataset finished in : " + str(round(time() - start_time, 3)) + "s.\033[0;0m")
-    print(temp.head())
     return temp
 
 
@@ -34,10 +25,9 @@ def main():
         exit(1)
     finally:
         df = clean_dataset(df)
-        histogram.draw_histogram(df, start_time, 'Care of Magical Creatures')
-        scatter_plot.draw_scatter(df, start_time, 'Defense Against the Dark Arts', 'Astronomy')
-        pair_plot.draw_pair_plot(df, start_time)
-
+        # histogram.draw_histogram(df, 'Care of Magical Creatures')
+        # scatter_plot.draw_scatter(df, 'Defense Against the Dark Arts', 'Astronomy')
+        pair_plot.draw_pair_plot(df)
     return 0
 
 

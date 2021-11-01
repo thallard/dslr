@@ -1,8 +1,7 @@
 import time
-import src.utils.lib as lib
+import utils.lib as lib
 import matplotlib.pyplot as plt
-import numpy as np
-from src.utils.logger import log
+from utils.logger import log
 
 
 # Draw histogram with same values between each hogwarts house
