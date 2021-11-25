@@ -26,7 +26,7 @@ def main():
     finally:
         df = clean_dataset(df)
         # histogram.draw_histogram(df, 'Care of Magical Creatures')
-        # scatter_plot.draw_scatter(df, 'Defense Against the Dark Arts', 'Astronomy')
+        # scatter_plot.draw_scatter(df, ''Defense Against the Dark Arts', 'Astronomy'')
         pair_plot.draw_pair_plot(df)
     return 0
 
