@@ -3,20 +3,18 @@ import time
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-import scatter_plot as scatter
-from numpy import NaN
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
 
 
 def _plot_cost(costh):  # This function plot the Cost function value
+    print('coucou =', costh)
     for cost, c in costh:
         # print(cost)
         plt.plot(range(len(cost)), cost, 'r')
         plt.title("Convergence Graph of Cost Function of type-" + str(c) + " vs All")
         plt.xlabel("Number of Iterations")
         plt.ylabel("Cost")
-        plt.show()
+        plt.savefig('../plots/' + c + '_cost')
+        plt.clf()
 
 
 def coef_determination(y, predictions):
@@ -25,8 +23,7 @@ def coef_determination(y, predictions):
         v = ((y - y.mean()) ** 2).sum()
 
 
-class Logic(object):
-
+class LogisticRegression(object):
     def __init__(self, iterations, learning_rate):
         self.iterations = iterations
         self.learning_rate = learning_rate
@@ -88,6 +85,8 @@ class Logic(object):
             self.log('Logistic Regression for ' + str(i) + ' class finished in : ')
             self.theta.append((theta, i))
             self.cost_history.append((cost_hist, i))
+
+        _plot_cost(self.cost_history)
         return self
 
     def predict(self, X):  # this function calls the max predict function to classify the individul feauter
@@ -96,8 +95,7 @@ class Logic(object):
         X_predicted = [max((sigmoid_v(i.dot(theta)), c) for theta, c in self.theta)[1] for i in X]
         return X_predicted
 
-    def score(self, X,
-              y):  # This function compares the predictd label with the actual label to find the model performance
+    def score(self, X, y):  # This function compares the predictd label with the actual label to find the model perform
         # sigmoid_v = np.vectorize(self.sigmoid)
         predicted = self.predict(X)
         true = 0
@@ -120,6 +118,14 @@ if __name__ == '__main__':
     data = data[data['Herbology'].notna()]
     data = data[data['Defense Against the Dark Arts'].notna()]
 
+    print(len(data))
+    for i in range(0, 15):
+        data = data.drop(data['Herbology'].idxmax())
+        data = data.drop(data['Herbology'].idxmin())
+        data = data.drop(data['Defense Against the Dark Arts'].idxmax())
+        data = data.drop(data['Defense Against the Dark Arts'].idxmin())
+    print(len(data))
+
     y_data = data['Hogwarts House'].values
     y_data = y_data.reshape(y_data.shape[0], 1)
     # x_data = np.array(data['Astronomy'])
@@ -127,16 +133,21 @@ if __name__ == '__main__':
 
     data = data.iloc[:, 8:10]
 
-
-
-
     # data = data[data.notna()]
     # data = data[data['Herbology'].notna()]
     x_data = data.values
+
+    print(data.sort_values(by=['Defense Against the Dark Arts']))
+
+    # q_low = df["col"].quantile(0.01)
+    # q_hi  = df["col"].quantile(0.99)
+
+    # df_filtered = df[(df["col"] < q_hi) & (df["col"] > q_low)]
+    print(x_data)
     # for i in range(len(x_data)):
     #     if x_data[i][1] == np.nan:
     #         print('fdp')
-    logi = Logic(1000, 0.1).logistic_regression(x_data, y_data)
+    logi = LogisticRegression(20, 0.1).logistic_regression(x_data, y_data)
 
     # _plot_cost(logi.cost_history)
     # plt.show()
@@ -148,6 +159,6 @@ if __name__ == '__main__':
     # print(dataset.head())
     print(x_data)
     print(x_data.shape)
-
+    # history = LogisticRegression.cost_history
     # scatter.draw_scatter(pd.read_csv('../datasets/dataset_train.csv'), 'Herbology', 'Astronomy')
     # score = coef_determination(y_data, x_data.dot(theta_final))
