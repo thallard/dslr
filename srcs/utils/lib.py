@@ -1,60 +1,75 @@
 import sys
-
+import math
 
 # Recreate sum function
 def mysum(data):
     total = 0
     for i in range(0, len(data)):
         total += data[i]
-    return total
+    return round(float(total), 2)
 
 
 # Recreate mean function
 def mymean(data):
-    return sum(data) / len(data)
+    return round(float(mysum(data) / len(data)), 2)
 
 
 # Recreate variance function
 def myvariance(data):
     mean = mymean(data)
-    deviations = [lib.pow((x - mean), 2) for x in data]
-    return mysum(deviations) / len(data)
+    deviations = [math.pow((x - mean), 2) for x in data]
+    return round(float(mysum(deviations) / len(data)), 2)
 
 
 # Recreate standard deviation function
 def mystd(data):
-    return lib.sqrt(myvariance(data))
+    return round(float(math.sqrt(myvariance(data))), 2)
 
 
 # Recreate min function
 def mymin(data):
-    res = sys.maxsize
+    min = sys.maxsize
     for i in range(0, len(data)):
-        if res > data[i]:
-            res = data[i]
-    return res
+        if min > data[i]:
+            min = data[i]
+    return round(float(min), 2)
 
 
 # Recreate max function
 def mymax(data):
-    res = -sys.maxsize
+    max = -sys.maxsize
     for i in range(0, len(data)):
-        if res < data[i]:
-            res = data[i]
-    return res
+        if max < data[i]:
+            max = data[i]
+    return round(float(max), 2)
 
 
-# Recreate percentile function
-def mypercentile(data, coef):
-    list_data = data.tolist()
-    list_data.sort()
+# Recreate first quartile function
+def quartile(data, coef):
+    list = data.tolist()
+    list.sort()
 
-    pos = int(len(list_data) * coef)
-    reste = len(list_data) * coef - pos
+    pos = int(len(list) * coef)
+    reste = len(list) * coef - pos
 
     if reste > 1 / 2:
-        return list_data[int(pos + (1 - reste))]
-    return list_data[pos]
+        return round(list[int(pos + int(reste))], 2)
+    return round(float(list[pos]), 2)
+
+
+# Recreate distance between min and max
+def difference(data):
+    return round(float(abs(mymin(data) - mymax(data))), 2)
+
+
+# Recreate ASCII to Integer
+def atoi(str):
+    resultant = 0
+    for i in range(len(str)):
+        if not str[i].isdigit():
+            return resultant
+        resultant = resultant * 10 + (ord(str[i]) - ord('0'))
+    return resultant
 
 
 # Create a dict and a string array with each name of hogwarts house

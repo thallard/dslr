@@ -11,8 +11,15 @@ def plot_cost(costh):  # This function plot the Cost function value
         plt.title("Convergence Graph of Cost Function of type-" + str(c) + " vs All")
         plt.xlabel("Number of Iterations")
         plt.ylabel("Cost")
-        plt.savefig('../plots/' + c + '_cost')
+        plt.savefig('../../saves/' + c + '_cost')
         plt.clf()
+
+
+# Sigmoid function
+def sigmoid(x):
+    if -x > np.log(np.finfo(type(x)).max):
+        return 0.0
+    return 1 / (1 + np.exp(-x))
 
 
 class LogisticRegression(object):
@@ -23,6 +30,20 @@ class LogisticRegression(object):
         self.theta = []
         self.time = time.time()
 
+    # Save theta in a weights file
+    def save_weights(self):
+        try:
+            file = open('../../saves/weights.txt', 'w+')
+
+            for theta in self.theta:
+                for i in range(3):
+                    file.write(str(float(theta[0][i])) + ", ")
+                file.write(str(theta[1]) + "\n")
+            file.close()
+        except IOError:
+            print('Error during weights file manipulation')
+        print('Weights has been saved in saves/weights.txt!')
+
     # Util function which allow to get execution time
     def log(self, msg):
         print("\033[32m" + msg + str(round(time.time() - self.time, 1)) + "s.\033[0;0m")
@@ -32,12 +53,6 @@ class LogisticRegression(object):
 
     def model(self, x, theta):
         return x.dot(theta)
-
-    # Sigmoid function
-    def sigmoid(self, x):
-        if -x > np.log(np.finfo(type(x)).max):
-            return 0.0
-        return 1 / (1 + np.exp(-x))
 
     # Cost function
     def cost_function(self, y, h, m):
@@ -61,7 +76,7 @@ class LogisticRegression(object):
 
             for j in range(self.iterations):
                 z = self.model(X, theta)
-                tmp = np.vectorize(self.sigmoid)
+                tmp = np.vectorize(sigmoid)
                 h = tmp(z)
                 theta -= self.gradient_descent(X, y_onevsall, h, m)
                 cost_hist.append(self.cost_function(y_onevsall, h, m))
@@ -73,9 +88,9 @@ class LogisticRegression(object):
         plot_cost(self.cost_history)
         return self
 
-    def predict(self, X):  # this function calls the max predict function to classify the individul feauter
+    def predict(self, X):  # this function calls the max predict function to classify the individual feature
         X = np.insert(X, 0, 1, axis=1)
-        sigmoid_v = np.vectorize(self.sigmoid)
+        sigmoid_v = np.vectorize(sigmoid)
         X_predicted = [max((sigmoid_v(i.dot(theta)), c) for theta, c in self.theta)[1] for i in X]
         return X_predicted
 
@@ -89,7 +104,7 @@ class LogisticRegression(object):
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../datasets/dataset_train.csv')
+    data = pd.read_csv('../../datasets/dataset_train.csv')
 
     data = data[data['Herbology'].notna()]
     data = data[data['Defense Against the Dark Arts'].notna()]
@@ -105,6 +120,8 @@ if __name__ == '__main__':
 
     data = data.iloc[:, 8:10]
 
+
     x_data = data.values
     logi = LogisticRegression(3000, 0.05).logistic_regression(x_data, y_data)
     print('Score :', round(logi.score(x_data, y_data), 2))
+    logi.save_weights()

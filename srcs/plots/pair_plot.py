@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import utils.lib as lib
 
 
-# Draw large amounts of plots using scatter and histogram
+# Draw large amounts of saves using scatter and histogram
 def draw_pair_plot(df):
     houses, data = lib.create_house_data_dict(df)
     pos = 0
@@ -19,7 +19,7 @@ def draw_pair_plot(df):
             plt.xticks([])
             plt.yticks([])
 
-            # Place columns labels on extremity plots
+            # Place columns labels on extremity saves
             if i == 1:
                 plt.ylabel(df.columns[x], fontsize=5)
             if x == len(df.columns) - 2:
