@@ -89,6 +89,7 @@ class LogisticRegression(object):
         return self
 
     def predict(self, X):  # this function calls the max predict function to classify the individual feature
+        print(type(X))
         X = np.insert(X, 0, 1, axis=1)
         sigmoid_v = np.vectorize(sigmoid)
         X_predicted = [max((sigmoid_v(i.dot(theta)), c) for theta, c in self.theta)[1] for i in X]
@@ -119,9 +120,8 @@ if __name__ == '__main__':
     y_data = y_data.reshape(y_data.shape[0], 1)
 
     data = data.iloc[:, 8:10]
-
-
+    print(data.head())
     x_data = data.values
     logi = LogisticRegression(3000, 0.05).logistic_regression(x_data, y_data)
     print('Score :', round(logi.score(x_data, y_data), 2))
-    logi.save_weights()
+    # logi.save_weights()

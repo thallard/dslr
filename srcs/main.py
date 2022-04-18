@@ -1,7 +1,7 @@
-
+import time
 import numpy as np
 import pandas as pd
-from srcs.plots import histogram, pair_plot, scatter_plot
+from plots import histogram, pair_plot, scatter_plot
 
 
 # Remove empty cells and useless columns from dataset
@@ -26,7 +26,7 @@ def main():
         exit(1)
     finally:
         df = clean_dataset(df)
-        histogram.draw_histogram(df, 'Care of Magical Creatures')
+        histogram.draw_histogram(df, time.time())
         scatter_plot.draw_scatter(df, 'Defense Against the Dark Arts', 'Astronomy')
         pair_plot.draw_pair_plot(df)
     return 0

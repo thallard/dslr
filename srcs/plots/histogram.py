@@ -5,7 +5,7 @@ from utils.logger import log
 
 
 # Draw histogram with same values between each hogwarts house
-def draw_histogram(df, start_time, label):
+def draw_histogram(df, start_time, label=""):
     print("\033[35mQuel cours de Poudlard a une répartition des notes homogènes entre les quatres maisons?\033[0m")
     houses, houses_data = lib.create_house_data_dict(df)
 
